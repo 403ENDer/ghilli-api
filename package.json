@@ -2,11 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "app/app.js",
+  "main": "src/app/app.js",
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/app.js",
-    "dev": "nodemon --exec tsx app/app.ts"
+    "dev": "nodemon --exec tsx src/app/app.ts"
   },
   "keywords": [],
   "author": "",
