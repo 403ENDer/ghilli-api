@@ -2,23 +2,21 @@ import mongoose, { Schema } from "mongoose";
 
 interface team {
   name: string;
-  locality: string;
+  location: string;
   ownerId: mongoose.ObjectId;
-  player: [];
+  players: [];
 }
 
 const teamSchema = new Schema<team>(
   {
     name: { type: String, requried: true },
-    locality: { type: String, required: true },
+    location: { type: String, required: true },
     ownerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "player",
       required: true,
     },
-    player: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "player", required: true },
-    ],
+    players: [{ type: mongoose.Schema.Types.ObjectId, ref: "player" }],
   },
   { timestamps: true }
 );

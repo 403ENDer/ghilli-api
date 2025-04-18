@@ -10,22 +10,29 @@ interface match {
   teamBscore: number;
   wonBy: mongoose.ObjectId;
   date: Date;
+  status: "scheduled" | "live" | "completed" | "cancelled";
 }
 
 const matchSchema = new Schema<match>({
   name: { type: String, required: true },
   tournament: {
     type: Schema.Types.ObjectId,
-    ref: "tournaments",
+    ref: "tournament",
     required: true,
   },
   ground: { type: Schema.Types.ObjectId, ref: "grounds", required: true },
   teamA: { type: Schema.Types.ObjectId, ref: "teams", required: true },
   teamB: { type: Schema.Types.ObjectId, ref: "teams", required: true },
-  teamAscore: { type: Number, required: true },
-  teamBscore: { type: Number, required: true },
-  wonBy: { type: Schema.Types.ObjectId, ref: "teams", required: true },
+  teamAscore: { type: Number, default: 0 },
+  teamBscore: { type: Number, default: 0 },
+  wonBy: {
+    type: Schema.Types.ObjectId,
+    ref: "teams",
+    required: false,
+    default: null,
+  },
   date: { type: Date, required: true },
+  status: { type: String, required: true },
 });
 
 export const matchModel =
