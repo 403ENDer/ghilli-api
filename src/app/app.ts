@@ -5,6 +5,7 @@ import cors from "cors";
 import indexRouter from "./routes/index.routes";
 import { setupWebSocket } from "./socket.io";
 import { createServer } from "http";
+import { swaggerSpec, swaggerUi } from "./swagger";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api", indexRouter);
 server.listen(PORT, () => {
   mongoose.connect;

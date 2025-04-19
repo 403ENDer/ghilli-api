@@ -28,15 +28,75 @@ export function setupWebSocket(server: Server) {
   const wss = new WebSocketServer({ server });
 
   wss.on("connection", async (ws: WebSocket, req: any) => {
-    const { query } = parse(req.url || "");
+    const { pathname, query } = parse(req.url || "");
     const params = querystring.parse(query || "") as {
-      scorer?: string;
+      scorerId?: string;
       matchId?: string;
     };
 
-    const { scorer, matchId } = params;
+    if (pathname === "/viewer/") {
+      const { matchId } = params;
+      console.log(params);
+      if (!matchId) {
+        ws.send(
+          JSON.stringify({
+            error: {
+              message: "Invalid request. 'matchId' is required for viewer.",
+            },
+          })
+        );
+        ws.close();
+        return;
+      }
 
-    if (!matchId || !scorer) {
+      if (!matchRooms[matchId]) {
+        ws.send(
+          JSON.stringify({
+            error: {
+              message: "Match not found or not live.",
+            },
+          })
+        );
+        ws.close();
+        return;
+      }
+
+      const viewerId = `viewer_${Date.now()}_${Math.random()}`;
+      const viewerClient: Client = {
+        id: viewerId,
+        name: viewerId,
+        ws,
+      };
+      matchRooms[matchId].viewers.push(viewerClient);
+
+      const room = matchRooms[matchId];
+      ws.send(
+        JSON.stringify({
+          data: {
+            type: "Viewer connected",
+            matchId,
+            scores: {
+              teamA: room.teams["Tamil Thalaivas"].score,
+              teamB: room.teams["HK"].score,
+            },
+            liveViewers: room.viewers.length,
+          },
+        })
+      );
+
+      ws.on("close", () => {
+        const index = room.viewers.findIndex((v) => v.id === viewerId);
+        if (index !== -1) {
+          room.viewers.splice(index, 1);
+        }
+      });
+
+      return;
+    }
+
+    const { scorerId, matchId } = params;
+
+    if (!matchId || !scorerId) {
       ws.send(
         JSON.stringify({
           error: {
@@ -50,6 +110,7 @@ export function setupWebSocket(server: Server) {
     }
 
     try {
+      console.log(matchId);
       const match = await matchModel.findByIdAndUpdate(matchId, {
         status: "live",
       });
@@ -86,8 +147,8 @@ export function setupWebSocket(server: Server) {
       }
 
       matchRooms[matchId].scorer.push({
-        id: scorer,
-        name: scorer,
+        id: scorerId,
+        name: scorerId,
         ws,
       });
 
@@ -95,7 +156,7 @@ export function setupWebSocket(server: Server) {
         JSON.stringify({
           data: {
             type: "Match started",
-            scorer,
+            scorerId,
             teams: {
               teamA: "Nan",
               teamB: "Avan",
@@ -115,20 +176,64 @@ export function setupWebSocket(server: Server) {
 
       ws.on("message", async (message: string) => {
         let data;
+        console.log(message);
         try {
           data = JSON.parse(message);
         } catch (error) {
           console.error(error);
           ws.send(
             JSON.stringify({
-              message: "Invaldi JSON",
+              message: "Invalid JSON",
             })
           );
+          return;
         }
 
-        if (data.type === "event") {
-          const event = data.event;
-          if (event.isRaiderSafe) {
+        if (data.type === "scoreUpdate") {
+          const room = matchRooms[matchId];
+          if (room) {
+            if (data.scores) {
+              if (typeof data.scores.teamA === "number") {
+                room.teams[teamA].score = data.scores.teamA;
+              }
+              if (typeof data.scores.teamB === "number") {
+                room.teams[teamB].score = data.scores.teamB;
+              }
+            }
+            room.viewers.forEach((viewer) => {
+              if (viewer.ws.readyState === WebSocket.OPEN) {
+                viewer.ws.send(
+                  JSON.stringify({
+                    data: {
+                      type: "scoreUpdate",
+                      scores: room.teams,
+                    },
+                  })
+                );
+              }
+            });
+            room.scorer.forEach((scorer) => {
+              if (scorer.ws.readyState === WebSocket.OPEN) {
+                scorer.ws.send(
+                  JSON.stringify({
+                    data: {
+                      type: "scoreUpdate",
+                      scores: room.teams,
+                    },
+                  })
+                );
+              }
+            });
+          }
+        }
+      });
+
+      ws.on("close", () => {
+        const room = matchRooms[matchId];
+        if (room) {
+          const index = room.scorer.findIndex((s) => s.id === scorerId);
+          if (index !== -1) {
+            room.scorer.splice(index, 1);
           }
         }
       });

@@ -7,6 +7,7 @@ export const createTournamentValidator = z
   .object({
     name: z.string().min(3),
     location: z.string().min(3),
+    createdBy: z.string(),
     startDate: z.coerce.date().refine((date) => date >= today, {
       message: "Start date must be today or later",
     }),

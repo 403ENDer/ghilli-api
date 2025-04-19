@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 interface playerStats {
   playerId: mongoose.ObjectId;
+  matchesPlayed: number;
   raidCount: number;
   successfulRaids: number;
   points: number;
@@ -16,6 +17,7 @@ const playerStatsSchema = new Schema<playerStats>(
   {
     playerId: { type: Schema.Types.ObjectId, ref: "players" },
     raidCount: { type: Number, default: 0 },
+    matchesPlayed: { type: Number, default: 0 },
     successfulRaids: { type: Number, default: 0 },
     points: { type: Number, default: 0 },
     bonusPoints: { type: Number, default: 0 },

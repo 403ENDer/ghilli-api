@@ -45,6 +45,7 @@ export class MatchController {
   public static async createMatch(req: any, res: any) {
     try {
       const data = createMatchValidator.safeParse(req.body).data;
+      console.log(data, req.body);
       const match = new matchModel(data);
       await match.save();
       return res.status(201).send({ message: "Match created", data: match });
