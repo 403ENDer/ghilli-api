@@ -196,7 +196,7 @@ export default teamRouter;
 
 /**
  * @swagger
- * /teams/{id}/removePlayer:
+ * /api/team/{id}/removePlayer:
  *   delete:
  *     summary: Remove a player from a team
  *     tags: [Teams]
