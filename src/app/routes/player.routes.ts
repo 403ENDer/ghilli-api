@@ -13,6 +13,8 @@ playerRouter.post('/', PlayerController.createPlayer);
 playerRouter.put('/:id', PlayerController.updatePlayer);
 playerRouter.delete('/:id', PlayerController.deletePlayer);
 
+export default playerRouter;
+
 /**
  * @swagger
  * tags:
@@ -410,5 +412,3 @@ playerRouter.delete('/:id', PlayerController.deletePlayer);
  *                   type: integer
  *                   example: 500
  */
-
-export default playerRouter;
