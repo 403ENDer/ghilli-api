@@ -20,7 +20,7 @@ export default matchRouter;
 
 /**
  * @swagger
- * /matches:
+ * /api/matches:
  *   get:
  *     summary: Get all matches
  *     tags: [Matches]
@@ -56,7 +56,7 @@ export default matchRouter;
 
 /**
  * @swagger
- * /matches/{id}:
+ * /api/matches/{id}:
  *   get:
  *     summary: Get a match by ID
  *     tags: [Matches]
@@ -108,7 +108,7 @@ export default matchRouter;
 
 /**
  * @swagger
- * /matches:
+ * /api/matches:
  *   post:
  *     summary: Create a new match
  *     tags: [Matches]
@@ -152,7 +152,7 @@ export default matchRouter;
 
 /**
  * @swagger
- * /matches/{id}:
+ * /api/matches/{id}:
  *   put:
  *     summary: Update a match by ID
  *     tags: [Matches]
@@ -215,7 +215,7 @@ export default matchRouter;
 
 /**
  * @swagger
- * /matches/{id}:
+ * /api/matches/{id}:
  *   delete:
  *     summary: Delete a match by ID
  *     tags: [Matches]

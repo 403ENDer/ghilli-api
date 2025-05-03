@@ -1,9 +1,9 @@
-import { matchModel } from "../model/matchModel";
-import { PlayerModel } from "../model/playerModel";
-import { playerStatsModel } from "../model/playerStatsModel";
-import { teamModel } from "../model/teamModel";
-import { tournamentModel } from "../model/tournamentModel";
-import { createPlayerValidator } from "../validators/playerValidator";
+import { matchModel } from '../model/matchModel';
+import { PlayerModel } from '../model/playerModel';
+import { playerStatsModel } from '../model/playerStatsModel';
+import { teamModel } from '../model/teamModel';
+import { tournamentModel } from '../model/tournamentModel';
+import { createPlayerValidator } from '../validators/playerValidator';
 
 export class PlayerController {
   public static async getAllPlayers(req: any, res: any) {
@@ -11,7 +11,7 @@ export class PlayerController {
       const players = await PlayerModel.find();
       return res.status(200).send({ data: players });
     } catch (error) {
-      return res.status(500).send({ error });
+      return res.status(500).send({ message: 'Failed to fetch all players', error: error });
     }
   }
 
@@ -22,14 +22,14 @@ export class PlayerController {
       return res.status(200).send({ data: teams });
     } catch (err) {
       console.log(err);
-      return res.status(500).send({ error: err });
+      return res.status(500).send({ message: "Failed to get player's teams", error: err });
     }
   }
 
   public static async getPlayerMatches(req: any, res: any) {
     try {
       const playerId = req.query.id;
-      const teams = await teamModel.find({ players: playerId }).select("_id");
+      const teams = await teamModel.find({ players: playerId }).select('_id');
       const teamIds = teams.map((team) => team._id);
 
       if (teamIds.length === 0) return [];
@@ -39,10 +39,10 @@ export class PlayerController {
           $or: [{ teamA: { $in: teamIds } }, { teamB: { $in: teamIds } }],
         })
         .populate([
-          { path: "tournament", select: "name" },
-          { path: "teamA", select: "name location" },
-          { path: "teamB", select: "name location" },
-          { path: "wonBy", select: "name" },
+          { path: 'tournament', select: 'name' },
+          { path: 'teamA', select: 'name location' },
+          { path: 'teamB', select: 'name location' },
+          { path: 'wonBy', select: 'name' },
         ]);
       return res.status(200).send({ data: matches });
     } catch (err) {
@@ -53,8 +53,8 @@ export class PlayerController {
   public static async getPlayerTournaments(req: any, res: any) {
     try {
       const playerId = req.query.id;
-      const teams = await teamModel.find({ players: playerId }).select("_id");
-      const teamIds = teams.map((team) => team._id);
+      const teams = await teamModel.find({ players: playerId }).select('_id');
+      const teamIds = teams?.map((team) => team._id);
 
       if (teamIds.length === 0) return [];
 
@@ -62,11 +62,9 @@ export class PlayerController {
         .find({
           $or: [{ teamA: { $in: teamIds } }, { teamB: { $in: teamIds } }],
         })
-        .select("tournament");
+        .select('tournament');
 
-      const tournamentIds = [
-        ...new Set(matches.map((match) => match.tournament.toString())),
-      ];
+      const tournamentIds = [...new Set(matches.map((match) => match.tournament.toString()))];
 
       if (tournamentIds.length === 0) return [];
 
@@ -76,7 +74,7 @@ export class PlayerController {
 
       return res.status(200).send({ data: tournaments });
     } catch (err) {
-      return res.status(500).send({ error: err });
+      return res.status(500).send({ message: "Failed getting player's tournaments", error: err });
     }
   }
 
@@ -88,7 +86,7 @@ export class PlayerController {
       return res.status(200).send({ data: playerStat });
     } catch (err) {
       console.log(err);
-      return res.status(500).send({ error: err });
+      return res.status(500).send({ message: "Failed getting player's stats", error: err });
     }
   }
 
@@ -97,11 +95,11 @@ export class PlayerController {
       const { id } = req.params;
       const player = await PlayerModel.findById(id);
       if (!player) {
-        return res.status(404).send({ message: "Player not found" });
+        return res.status(404).send({ message: 'Player not found' });
       }
       return res.status(200).send({ data: player });
     } catch (error) {
-      return res.status(500).send({ error });
+      return res.status(500).send({ message: 'Failed to get player by ID', error: error });
     }
   }
 
@@ -113,7 +111,7 @@ export class PlayerController {
 
       return res.status(201).send({ data: player });
     } catch (error) {
-      return res.status(500).send({ error });
+      return res.status(500).send({ message: 'Failed to create player', error: error });
     }
   }
 
@@ -125,11 +123,11 @@ export class PlayerController {
         runValidators: true,
       });
       if (!updated) {
-        return res.status(404).send({ message: "Player not found" });
+        return res.status(404).send({ message: 'Player not found' });
       }
       return res.status(200).send({ data: updated });
     } catch (error) {
-      return res.status(500).send({ error });
+      return res.status(500).send({ message: 'Failed to update player', error: error });
     }
   }
 
@@ -138,11 +136,11 @@ export class PlayerController {
       const { id } = req.params;
       const deleted = await PlayerModel.findByIdAndDelete(id);
       if (!deleted) {
-        return res.status(404).send({ message: "Player not found" });
+        return res.status(404).send({ message: 'Player not found' });
       }
-      return res.status(200).send({ message: "Player deleted" });
+      return res.status(200).send({ message: 'Player deleted' });
     } catch (error) {
-      return res.status(500).send({ error });
+      return res.status(500).send({ message: 'Failed to delete player', error: error });
     }
   }
 }
