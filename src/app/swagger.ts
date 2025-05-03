@@ -423,6 +423,38 @@ const options = {
             superTackle: 3,
           },
         },
+        TournamentTeam: {
+          type: 'object',
+          required: ['name', 'location', 'createdBy', 'startDate', 'endDate'],
+          properties: {
+            _id: {
+              type: 'string',
+              description: 'Auto-generated ID of the TournamentTeam ',
+            },
+            tournamentId: {
+              type: 'string',
+              description: 'ID of the tournament this team is participating in teamId',
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+            },
+          },
+          example: {
+            _id: '60af8840d1fd5c1f4c8c9aaa',
+            name: 'Ghilli Cup 2025',
+            location: 'Coimbatore',
+            createdBy: '60af8840d1fd5c1f4c8c9bbb',
+            startDate: '2025-06-01T10:00:00.000Z',
+            endDate: '2025-06-10T18:00:00.000Z',
+            createdAt: '2025-05-01T12:00:00.000Z',
+            updatedAt: '2025-05-03T12:00:00.000Z',
+          },
+        },
       },
     },
   },
