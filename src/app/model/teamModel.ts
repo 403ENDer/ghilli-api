@@ -1,5 +1,5 @@
-import mongoose, { Schema } from "mongoose";
-
+import mongoose, { Schema } from 'mongoose';
+//doubts why should we have location for a team
 interface team {
   name: string;
   location: string;
@@ -13,13 +13,12 @@ const teamSchema = new Schema<team>(
     location: { type: String, required: true },
     ownerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "player",
+      ref: 'user',
       required: true,
     },
-    players: [{ type: mongoose.Schema.Types.ObjectId, ref: "player" }],
+    players: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
   },
   { timestamps: true }
 );
 
-export const teamModel =
-  mongoose.models.teams || mongoose.model("teams", teamSchema);
+export const teamModel = mongoose.models.teams || mongoose.model('teams', teamSchema);

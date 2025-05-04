@@ -6,6 +6,7 @@ import indexRouter from './routes/index.routes';
 import { setupWebSocket } from './socket.io';
 import { createServer } from 'http';
 import { swaggerSpec, swaggerUi } from './swagger';
+import { authMiddleware } from './middlewares/authMiddleware';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(
   })
 );
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(authMiddleware);
 app.use('/api', indexRouter);
 server.listen(PORT, () => {
   mongoose.connect;

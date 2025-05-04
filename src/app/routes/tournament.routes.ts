@@ -47,7 +47,7 @@ export default tournamentRouter;
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Tournament'
+ *             $ref: '#/components/schemas/TournamentInputPayload'
  *     responses:
  *       201:
  *         description: Tournament created successfully
@@ -107,7 +107,7 @@ export default tournamentRouter;
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Tournament'
+ *             $ref: '#/components/schemas/TournamentInputPayload'
  *     responses:
  *       200:
  *         description: Tournament updated

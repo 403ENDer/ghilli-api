@@ -105,8 +105,9 @@ export class PlayerController {
 
   public static async createPlayer(req: any, res: any) {
     try {
-      const data = createPlayerValidator.safeParse(req.body).data;
-      const player = await PlayerModel.create(data);
+      const data = createPlayerValidator.safeParse(req.body);
+      if (!data?.success) return res.status(400).send({ message: 'Invalid format', details: data.error });
+      const player = await PlayerModel.create(data.data);
       await playerStatsModel.create({ playerId: player._id });
 
       return res.status(201).send({ data: player });

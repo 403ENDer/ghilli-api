@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
 interface playerStats {
   playerId: mongoose.ObjectId;
@@ -15,7 +15,7 @@ interface playerStats {
 
 const playerStatsSchema = new Schema<playerStats>(
   {
-    playerId: { type: Schema.Types.ObjectId, ref: "players" },
+    playerId: { type: Schema.Types.ObjectId, ref: 'user' },
     raidCount: { type: Number, default: 0 },
     matchesPlayed: { type: Number, default: 0 },
     successfulRaids: { type: Number, default: 0 },
@@ -30,5 +30,4 @@ const playerStatsSchema = new Schema<playerStats>(
 );
 
 export const playerStatsModel =
-  mongoose.models.playerStats ||
-  mongoose.model<playerStats>("playerStats", playerStatsSchema);
+  mongoose.models.playerStats || mongoose.model<playerStats>('playerStats', playerStatsSchema);

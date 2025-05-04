@@ -121,13 +121,13 @@ const options = {
           properties: {
             _id: { type: 'string' },
             name: { type: 'string' },
-            phone: { type: 'number' },
+            phone: { type: 'string' },
             email: { type: 'string' },
           },
           example: {
             _id: '60af8840d1fd5c1f4c8c9ef9',
             name: 'John Doe',
-            phone: 9876543210,
+            phone: '9876543210',
             email: 'johndoe@example.com',
           },
         },
@@ -136,8 +136,13 @@ const options = {
           required: ['name', 'phone', 'email'],
           properties: {
             name: { type: 'string' },
-            phone: { type: 'number' },
+            phone: { type: 'string' },
             email: { type: 'string' },
+          },
+          example: {
+            name: 'John Doe',
+            phone: '9876543210',
+            email: 'johndoe@example.com',
           },
         },
         Team: {
@@ -265,7 +270,7 @@ const options = {
         },
         TournamentInputPayload: {
           type: 'object',
-          required: ['name', 'location', 'createdBy', 'startDate', 'endDate'],
+          required: ['name', 'location', 'startDate', 'endDate'],
           properties: {
             name: {
               type: 'string',
@@ -273,9 +278,7 @@ const options = {
             location: {
               type: 'string',
             },
-            createdBy: {
-              type: 'string',
-            },
+
             startDate: {
               type: 'string',
               format: 'date-time',
@@ -288,7 +291,6 @@ const options = {
           example: {
             name: 'Ghilli Cup 2025',
             location: 'Coimbatore',
-            createdBy: '60af8840d1fd5c1f4c8c9bbb',
             startDate: '2025-06-01T10:00:00.000Z',
             endDate: '2025-06-10T18:00:00.000Z',
           },
@@ -453,6 +455,123 @@ const options = {
             endDate: '2025-06-10T18:00:00.000Z',
             createdAt: '2025-05-01T12:00:00.000Z',
             updatedAt: '2025-05-03T12:00:00.000Z',
+          },
+        },
+        Ground: {
+          type: 'object',
+          required: ['name', 'locationUrl'],
+          properties: {
+            _id: {
+              type: 'string',
+              description: 'Auto-generated ID of the ground',
+            },
+            name: {
+              type: 'string',
+              description: 'Name of the ground',
+            },
+            locationUrl: {
+              type: 'string',
+              description: 'Google maps url of the ground',
+            },
+            adminId: {
+              type: 'string',
+              description: 'Person who created the ground',
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+            },
+          },
+          example: {
+            _id: '60af8840d1fd5c1f4c8c9ef3',
+            name: 'Example turf',
+            locationUrl: 'https://maps.app.goo.gl/example',
+            adminId: '60af8840d1fd5c1f4c8c9aaa',
+            createdAt: '2025-05-03T10:00:00.000Z',
+            updatedAt: '2025-05-03T12:00:00.000Z',
+          },
+        },
+        GroundInputPayload: {
+          type: 'object',
+          required: ['name', 'locationUrl'],
+          properties: {
+            name: {
+              type: 'string',
+              description: 'Name of the ground',
+            },
+            locationUrl: {
+              type: 'string',
+              description: 'Google maps url of the ground',
+            },
+          },
+          example: {
+            name: 'Example turf',
+            locationUrl: 'https://maps.app.goo.gl/example',
+          },
+        },
+        User: {
+          type: 'object',
+          required: ['name', 'email'],
+          properties: {
+            _id: {
+              type: 'string',
+              description: 'Auto-generated ID of the user',
+            },
+            name: {
+              type: 'string',
+              description: 'Name of the user',
+            },
+            email: {
+              type: 'string',
+              description: 'Email of the user',
+            },
+            phone: {
+              type: 'string',
+              description: 'Phone number of the user',
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+            },
+          },
+          example: {
+            _id: '60af8840d1fd5c1f4c8c9aaa',
+            name: 'John Doe',
+            email: 'johndoe@example.com',
+            phone: '9876543210',
+            createdAt: '2025-05-03T10:00:00.000Z',
+            updatedAt: '2025-05-03T12:00:00.000Z',
+          },
+        },
+        UserInputPayload: {
+          type: 'object',
+          required: ['name', 'email'],
+          properties: {
+            name: {
+              type: 'string',
+              description: 'Name of the user',
+            },
+            email: {
+              type: 'string',
+              description: 'Email of the user',
+            },
+            phone: {
+              type: 'string',
+              description: 'Phone number of the user',
+            },
+          },
+          example: {
+            name: 'John Doe',
+            email: 'johndoe@example.com',
+            phone: '9876543210',
           },
         },
       },

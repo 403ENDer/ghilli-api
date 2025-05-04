@@ -11,8 +11,8 @@ interface matchEvents {
 
 const matchEventSchema = new Schema<matchEvents>({
   matchId: { type: Schema.Types.ObjectId, ref: 'matches', required: true },
-  raiderId: { type: Schema.Types.ObjectId, ref: 'players', required: true },
-  defendersInvolved: [{ type: Schema.Types.ObjectId, ref: 'players' }],
+  raiderId: { type: Schema.Types.ObjectId, ref: 'user', required: true },
+  defendersInvolved: [{ type: Schema.Types.ObjectId, ref: 'user' }],
   touchPoints: { type: Number, default: 0 },
   bonusPoint: { type: Number, default: 0 },
   isSuccessful: { type: Boolean, default: false, required: true },

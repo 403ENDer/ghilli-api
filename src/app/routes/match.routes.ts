@@ -8,6 +8,7 @@ matchRouter.get('/', MatchController.getAllMatches);
 matchRouter.post('/', MatchController.createMatch);
 matchRouter.put('/:id', MatchController.updateMatch);
 matchRouter.delete('/:id', MatchController.deleteMatch);
+matchRouter.get('/user', MatchController.getUserMatches);
 
 export default matchRouter;
 
@@ -20,7 +21,7 @@ export default matchRouter;
 
 /**
  * @swagger
- * /api/matches:
+ * /api/match:
  *   get:
  *     summary: Get all matches
  *     tags: [Matches]
@@ -56,7 +57,7 @@ export default matchRouter;
 
 /**
  * @swagger
- * /api/matches/{id}:
+ * /api/match/{id}:
  *   get:
  *     summary: Get a match by ID
  *     tags: [Matches]
@@ -108,7 +109,7 @@ export default matchRouter;
 
 /**
  * @swagger
- * /api/matches:
+ * /api/match:
  *   post:
  *     summary: Create a new match
  *     tags: [Matches]
@@ -152,7 +153,7 @@ export default matchRouter;
 
 /**
  * @swagger
- * /api/matches/{id}:
+ * /api/match/{id}:
  *   put:
  *     summary: Update a match by ID
  *     tags: [Matches]
@@ -215,7 +216,7 @@ export default matchRouter;
 
 /**
  * @swagger
- * /api/matches/{id}:
+ * /api/match/{id}:
  *   delete:
  *     summary: Delete a match by ID
  *     tags: [Matches]
